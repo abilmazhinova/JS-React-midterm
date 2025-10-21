@@ -21,7 +21,7 @@ function App() {
     const data = await response.json()
     const random = data.sort(() => 0.5 - Math.random()).slice(0, 100)
     setShows(random)
-    setVisibleCount(24)// выводит ограниченное количество для начала
+    setVisibleCount(25)// выводит ограниченное количество для начала
     setLoading(false)
   }
 
@@ -32,7 +32,7 @@ function App() {
     const data = await response.json()
     const mapped = data.map((item) => item.show)
     setShows(mapped)
-    setVisibleCount(18)
+    setVisibleCount(20)
     setLoading(false)
     setNoResults(mapped.length === 0)
   }

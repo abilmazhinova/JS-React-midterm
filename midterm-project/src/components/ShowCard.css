@@ -1,35 +1,43 @@
 .show-card {
-  background-color: white;
+  background-color: #ffffffcc; 
   border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  overflow: hidden;
-  width: 210px;
+  box-shadow: 0 4px 10px rgba(95, 158, 160, 0.2);
+  padding: 15px;
+  width: 220px;
+  text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Helvetica', sans-serif;
 }
 
 .show-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(95, 158, 160, 0.3);
 }
 
-.show-card img {
+.show-image {
   width: 100%;
-  height: auto;
-  display: block;
+  border-radius: 12px;
+  object-fit: cover;
 }
 
-.show-info {
-  padding: 10px;
+.card-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
 }
 
-.show-info h3 {
-  margin: 8px 0 5px;
-  font-size: 1rem;
-  color: #111;
+.more-btn {
+  background-color: #5F9EA0;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
-.show-info p {
-  margin: 0;
-  color: #666;
-  font-size: 0.9rem;
+.more-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
 }
