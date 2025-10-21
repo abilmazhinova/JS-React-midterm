@@ -1,0 +1,39 @@
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: linear-gradient(to bottom, #eef2ff, #f9faff);
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  text-align: center;
+  padding: 40px 20px 60px;
+}
+
+h1 {
+  color: #1d1d1f;
+  margin-bottom: 25px;
+}
+
+.loading,
+.no-results {
+  color: #333;
+  margin-top: 30px;
+  font-size: 1.2rem;
+}
+
+.load-more-btn {
+  margin-top: 30px;
+  padding: 12px 22px;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.load-more-btn:hover {
+  background-color: #5848e0;
+}

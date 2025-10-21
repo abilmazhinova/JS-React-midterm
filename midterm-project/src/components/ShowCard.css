@@ -1,0 +1,35 @@
+.show-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  width: 210px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.show-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.show-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.show-info {
+  padding: 10px;
+}
+
+.show-info h3 {
+  margin: 8px 0 5px;
+  font-size: 1rem;
+  color: #111;
+}
+
+.show-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,13 @@
+body {
+  font-family: Helvetica;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+/* Можно добавить глобальные кнопки, input, etc. */
+button {
+  font-family: Helvetica;
+  cursor: pointer;
+}
