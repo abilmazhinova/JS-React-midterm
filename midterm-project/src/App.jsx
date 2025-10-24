@@ -32,7 +32,7 @@ function App() {
     }
   };
 
-  // поиск + фильтрация по жанрам
+  // поиск и фильтрация по жанрам
   const handleSearch = () => {
     if (!searchTerm.trim() && genre === "All") return;
 
