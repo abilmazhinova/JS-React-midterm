@@ -1,88 +1,111 @@
-import React, { useEffect, useState } from 'react'
-import SearchBar from './components/SearchBar'
-import ShowList from './components/ShowList'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import SearchBar from "./components/SearchBar";
+import ShowList from "./components/ShowList";
+import "./App.css";
 
 function App() {
-  const [shows, setShows] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [noResults, setNoResults] = useState(false)
-  const [visibleCount, setVisibleCount] = useState(18)
+  const [shows, setShows] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredShows, setFilteredShows] = useState([]);
+  const [genre, setGenre] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [noResults, setNoResults] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(20);
 
-  // сначала загружает список рандомных сериалов 
+  // загрузка всех шоу при старте
   useEffect(() => {
-    loadRandomShows()
-  }, [])
+    loadShows();
+  }, []);
 
-  const loadRandomShows = async () => {
-    setLoading(true)
-    const response = await fetch('https://api.tvmaze.com/shows')
-    const data = await response.json()
-    const random = data.sort(() => 0.5 - Math.random()).slice(0, 100)
-    setShows(random)
-    setVisibleCount(25)// выводит ограниченное количество для начала
-    setLoading(false)
-  }
-
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) return
-    setLoading(true)
-    const response = await fetch(`https://api.tvmaze.com/search/shows?q=${searchTerm}`)
-    const data = await response.json()
-    const mapped = data.map((item) => item.show)
-    setShows(mapped)
-    setVisibleCount(20)
-    setLoading(false)
-    setNoResults(mapped.length === 0)
-  }
-
-  // если нет результатов — покажет сообщение что нет совпадение и очистится спустя 3 секунды
-  useEffect(() => {
-    if (noResults) {
-      const timer = setTimeout(() => {
-        setSearchTerm('')
-        setNoResults(false)
-        loadRandomShows()
-      }, 3000)
-      return () => clearTimeout(timer)
+  const loadShows = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("https://api.tvmaze.com/shows");
+      const data = await res.json();
+      setShows(data);
+      setFilteredShows(data);
+      setVisibleCount(20);
+    } catch (err) {
+      console.error("Ошибка загрузки данных:", err);
+    } finally {
+      setLoading(false);
     }
-  }, [noResults])
+  };
 
-  const handleRandomize = () => {
-    loadRandomShows()
-  }
+  // поиск + фильтрация по жанрам
+  const handleSearch = () => {
+    if (!searchTerm.trim() && genre === "All") return;
 
+    setLoading(true);
+
+    const nameFiltered = shows.filter((show) =>
+      show.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const genreFiltered =
+      genre === "All"
+        ? nameFiltered
+        : nameFiltered.filter((show) => show.genres.includes(genre));
+
+    setFilteredShows(genreFiltered);
+    setVisibleCount(20);
+    setLoading(false);
+    setNoResults(genreFiltered.length === 0);
+
+    if (genreFiltered.length === 0) {
+      setTimeout(() => {
+        setSearchTerm("");
+        setNoResults(false);
+        loadShows();
+      }, 3000);
+    }
+  };
+
+  const handleRandom = () => {
+    const randomShows = [...shows].sort(() => 0.5 - Math.random()).slice(0, 100);
+    setFilteredShows(randomShows);
+    setVisibleCount(20);
+  };
+
+  // загружает еще 20 штук рандомных сериалов
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 18)
-  }
+    setVisibleCount((prev) => prev + 20);
+  };
 
   return (
-    <div className="app">
-      <h1>TVMaze Explorer</h1>
+    <div className="App">
+      <h1>TV Show Explorer</h1>
+
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         onSearch={handleSearch}
-        onRandomize={handleRandomize}
+        onRandom={handleRandom}
+        genre={genre}
+        setGenre={setGenre}
       />
 
       {loading ? (
-        <p className="loading">Loading</p>
+        <p className="loading">Loading...</p>
       ) : noResults ? (
-        <p className="no-results">No results for search, clearing in 3 seconds...</p>
+        <p className="no-results">
+          No results found. Resetting in 3 seconds...
+        </p>
       ) : (
         <>
-          <ShowList shows={shows.slice(0, visibleCount)} />
-          {visibleCount < shows.length && (
-            <button className="load-more-btn" onClick={handleLoadMore}>
-              Load more
-            </button>
+          <ShowList shows={filteredShows.slice(0, visibleCount)} />
+
+          {visibleCount < filteredShows.length && (
+            <div className="card-footer">
+              <button className="more-btn" onClick={handleLoadMore}>
+                Load more
+              </button>
+            </div>
           )}
         </>
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
